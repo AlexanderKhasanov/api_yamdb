@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models.constraints import UniqueConstraint
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -21,9 +22,9 @@ class Review(models.Model):
         on_delete=models.CASCADE,
         related_name='reviews',
     )
-    score = models.IntegerField(
+    score = models.PositiveIntegerField(
         verbose_name='Рейтинг произведения',
-        choices=[(i, i) for i in range(1, 11)],
+        validators=[MinValueValidator(1), MaxValueValidator(10)],
     )
     pub_date = models.DateTimeField(
         verbose_name='Дата публикации отзыва',
@@ -44,6 +45,11 @@ class Review(models.Model):
 
 
 class Comment(models.Model):
+    review = models.ForeignKey(
+        Review,
+        on_delete=models.CASCADE,
+        related_name='comments',
+    )
     text = models.CharField(
         verbose_name='Текст комментария',
         max_length=155,
