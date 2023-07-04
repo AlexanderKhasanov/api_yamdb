@@ -51,7 +51,7 @@ class Comment(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='comment',
+        related_name='comments',
     )
     pub_date = models.DateTimeField(
         verbose_name='Дата публикации комментария',
