@@ -7,7 +7,7 @@ from reviews.models import Title, Review
 
 class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
-    permission_classes = None # Add class
+    # permission_classes = None # Add class
     pagination_class = LimitOffsetPagination
 
     def get_title(self) -> Title:
@@ -25,7 +25,7 @@ class ReviewViewSet(ModelViewSet):
 
 class CommentViewSet(ModelViewSet):
     serializer_class = CommentSerializer
-    permission_classes = None #  Add class
+    # permission_classes = None #  Add class
     pagination_class = LimitOffsetPagination
 
     def get_review(self) -> Review:
