@@ -5,6 +5,7 @@ from reviews.models import Title, Review
 
 
 class ReviewViewSet(ModelViewSet):
+    http_method_names = ('get', 'post', 'patch', 'delete',)
     serializer_class = ReviewSerializer
     # permission_classes = None # Add class
 
@@ -22,6 +23,7 @@ class ReviewViewSet(ModelViewSet):
 
 
 class CommentViewSet(ModelViewSet):
+    http_method_names = ('get', 'post', 'patch', 'delete',)
     serializer_class = CommentSerializer
     # permission_classes = None #  Add class
 
