@@ -6,8 +6,96 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
+class Category(models.Model):
+    name = models.CharField(
+        max_length=256,
+        verbose_name='Название категории',
+        help_text='Укажите название категории (не более 256 символов)'
+    )
+    slug = models.SlugField(
+        max_length=50,
+        unique=True,
+        verbose_name='Уникальное имя категории',
+        help_text='Укажите уникальное имя категории (не более 50 символов)'
+    )
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
+    def __str__(self) -> str:
+        return self.name[:30]
+
+
+class Genre(models.Model):
+    name = models.CharField(
+        max_length=256,
+        verbose_name='Название жанра',
+        help_text='Укажите название жанра (не более 256 символов)'
+    )
+    slug = models.SlugField(
+        max_length=50,
+        unique=True,
+        verbose_name='Уникальное имя жанра',
+        help_text='Укажите уникальное имя жанра (не более 50 символов)'
+    )
+
+    class Meta:
+        verbose_name = 'Жанр'
+        verbose_name_plural = 'Жанры'
+
+    def __str__(self) -> str:
+        return self.name[:30]
+
+
 class Title(models.Model):
-    pass
+    name = models.CharField(
+        max_length=256,
+        verbose_name='Название произведения',
+        help_text='Введите название произведения (не более 256 символов)'
+    )
+    year = models.IntegerField(
+        verbose_name='Год выпуска',
+        help_text='Укажите год выпуска произведения'
+    )
+    description = models.TextField(
+        blank=True,
+        verbose_name='Описание произведения',
+        help_text='Укажите описание произведения'
+    )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='category',
+        verbose_name='Категория произведения',
+        help_text='Укажите, к какой категории относится произведение'
+    )
+    genre = models.ManyToManyField(
+        Genre,
+        through='TitleGenre',
+        related_name='genres',
+        verbose_name='Жанры произведения',
+        help_text='Укажите, к какому жанру относится произведение'
+    )
+
+    class Meta:
+        verbose_name = 'Произведение'
+        verbose_name_plural = 'Произведения'
+
+    def __str__(self) -> str:
+        return self.name[:30]
+
+
+class TitleGenre(models.Model):
+    title = models.ForeignKey(Title, on_delete=models.CASCADE)
+    genre = models.ForeignKey(Genre, on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        unique_together = ('title', 'genre')
+
+    def __str__(self) -> str:
+        return f'{self.title}: {self.genre}'
 
 
 class Review(models.Model):
