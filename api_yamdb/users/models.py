@@ -18,11 +18,12 @@ class User(AbstractUser):
         verbose_name='Роль',
         max_length=16,
         choices=CHOICES,
-        default='User'
+        default='user'
     )
     email = models.EmailField(
         verbose_name='e-mail адрес',
-        max_length=256)
+        max_length=256
+    )
 
     class Meta:
         verbose_name = 'Пользователь'
