@@ -21,7 +21,7 @@ from .filters import TitleFilters
 from .mixins import CreateModelViewSet
 
 
-class CreateUserViewSet(CreateModelViewSet):
+class SignUpUserViewSet(CreateModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (AllowAny, )
