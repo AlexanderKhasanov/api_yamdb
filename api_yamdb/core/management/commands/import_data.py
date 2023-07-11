@@ -10,7 +10,7 @@ class Command(BaseCommand):
     help = 'Импорт данных в базу данных из файла csv'
 
     CHOISE_MODEL = {
-        'titles': Title,
+        'titles': Title(),
         'genre': Genre,
         'genre_title': TitleGenre,
         'category': Category(),
@@ -28,10 +28,7 @@ class Command(BaseCommand):
 
     def get_csv_files(self, path: str) -> list:
         csv_files = []
-        if os.path.isfile(path):
-            if os.path.splitext(path)[-1] == '.csv':
-                csv_files.append(path)
-        else:
+        if os.path.isdir(path):
             for file in os.listdir(path):
                 if os.path.splitext(file)[-1] == '.csv':
                     csv_files.append(os.path.join(path, file))
@@ -43,11 +40,18 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         csv_files = self.get_csv_files(options['csv_path'])
+        print(csv_files)
         for file in csv_files:
             model = self.get_model(file)
-            with open(file, 'r') as f:
+            with open(file, 'r', encoding='utf-8', errors='ignore') as f:
                 reader = csv.DictReader(f)
                 for row in reader:
+                    pass
+                    #row.pop('id')
+                    #print(row)
+                    #model.objects.get_or_create(**row)
+                    '''
                     for column, value in row.items():
                         setattr(model, column, value)
                     model.save()
+                    '''
