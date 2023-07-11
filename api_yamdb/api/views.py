@@ -26,12 +26,6 @@ class CreateUserViewSet(CreateModelViewSet):
     serializer_class = UserSerializer
     permission_classes = (AllowAny, )
 
-    def create(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
     def perform_create(self, serializer):
         user = serializer.save()
         confirmation_code = default_token_generator.make_token(user)
