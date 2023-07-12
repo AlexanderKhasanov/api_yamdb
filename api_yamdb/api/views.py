@@ -16,12 +16,11 @@ from .serializers import (ReviewSerializer, CommentSerializer,
                           GenreSerializers, CategorySerializers,
                           UserSerializer, IssueTokenSerializer)
 from reviews.models import Title, Review, Genre, Category, User
-from .viewsets import ListCreateDeleteViewSet
+from .viewsets import ListCreateDeleteViewSet, CreateViewSet
 from .filters import TitleFilters
-from .mixins import CreateModelViewSet
 
 
-class SignUpUserViewSet(CreateModelViewSet):
+class SignUpUserViewSet(CreateViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (AllowAny, )

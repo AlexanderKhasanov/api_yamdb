@@ -25,10 +25,6 @@ class User(AbstractUser):
         max_length=254,
         unique=True,
     )
-    username = models.CharField(
-        max_length=150,
-        unique=True,
-    )
 
     class Meta:
         verbose_name = 'Пользователь'
