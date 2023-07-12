@@ -18,6 +18,7 @@ from .serializers import (ReviewSerializer, CommentSerializer,
 from reviews.models import Title, Review, Genre, Category, User
 from .viewsets import ListCreateDeleteViewSet, CreateViewSet
 from .filters import TitleFilters
+from .permissions import (IsAuthorModeratorAdminOrReadOnly, IsAdminOrReadOnly)
 
 
 class SignUpUserViewSet(CreateViewSet):
@@ -64,7 +65,7 @@ class IssueTokenAPIView(APIView):
 class ReviewViewSet(ModelViewSet):
     http_method_names = ('get', 'post', 'patch', 'delete',)
     serializer_class = ReviewSerializer
-    # permission_classes = None # Add class
+    permission_classes = (IsAuthorModeratorAdminOrReadOnly,)
 
     def get_title(self) -> Title:
         return get_object_or_404(Title, pk=self.kwargs.get('title_id'))
@@ -82,7 +83,7 @@ class ReviewViewSet(ModelViewSet):
 class CommentViewSet(ModelViewSet):
     http_method_names = ('get', 'post', 'patch', 'delete',)
     serializer_class = CommentSerializer
-    # permission_classes = None #  Add class
+    permission_classes = (IsAuthorModeratorAdminOrReadOnly,)
 
     def get_review(self) -> Review:
         return get_object_or_404(
@@ -106,6 +107,7 @@ class TitleViewSet(ModelViewSet):
     http_method_names = ('get', 'post', 'patch', 'delete',)
     filter_backends = (DjangoFilterBackend,)
     filterset_class = TitleFilters
+    permission_classes = (IsAdminOrReadOnly,)
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -118,6 +120,7 @@ class GenreViewSet(ListCreateDeleteViewSet):
     serializer_class = GenreSerializers
     filter_backends = (SearchFilter,)
     search_fields = ('$name',)
+    permission_classes = (IsAdminOrReadOnly,)
 
 
 class CategoryViewSet(ListCreateDeleteViewSet):
@@ -125,3 +128,4 @@ class CategoryViewSet(ListCreateDeleteViewSet):
     serializer_class = CategorySerializers
     filter_backends = (SearchFilter,)
     search_fields = ('$name',)
+    permission_classes = (IsAdminOrReadOnly,)
