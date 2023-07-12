@@ -6,3 +6,7 @@ class ListCreateDeleteViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
                               mixins.DestroyModelMixin, GenericViewSet):
     lookup_field = 'slug'
     lookup_value_regex = '[-a-zA-Z0-9_]+'
+
+
+class CreateViewSet(mixins.CreateModelMixin, GenericViewSet):
+    pass
