@@ -157,10 +157,15 @@ class UserViewSet(ModelViewSet):
     @action(detail=False, methods=('get', 'patch'), url_path='me',
             permission_classes=(IsOwner, ))
     def user_profile(self, request):
-        serializer = self.get_serializer(request.user, data=request.data)
         if request.method == 'GET':
-            return Response(serializer.data, status=status.HTTP_200_OK,)
+            serializer = self.get_serializer(request.user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer = self.get_serializer(
+            request.user, data=request.data, partial=True
+        )
         if serializer.is_valid():
+            if 'role' in serializer.validated_data.keys():
+                serializer.validated_data.pop('role')
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
