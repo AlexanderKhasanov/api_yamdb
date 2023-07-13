@@ -1,12 +1,13 @@
 from rest_framework import serializers
 from django.db.models import Avg
+from django.contrib.auth import get_user_model
 
-from reviews.models import (
-    Review, Comment, Title, Genre, Category, TitleGenre, User
-)
+from reviews.models import Review, Comment, Title, Genre, Category, TitleGenre
+
+User = get_user_model()
 
 
-class UserSerializer(serializers.ModelSerializer):
+class SignUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
@@ -97,3 +98,11 @@ class TitleSerializers(serializers.ModelSerializer):
         for genre in genres:
             TitleGenre.objects.create(title=title, genre=genre)
         return title
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'first_name', 'last_name', 'bio',
+                  'role',)
