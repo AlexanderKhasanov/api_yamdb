@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from django_filters.rest_framework import DjangoFilterBackend
 from django.conf import settings
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
@@ -14,16 +15,18 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import (ReviewSerializer, CommentSerializer,
                           TitleSerializers, TitleGetSerializers,
                           GenreSerializers, CategorySerializers,
-                          UserSerializer, IssueTokenSerializer)
+                          SignUpSerializer, IssueTokenSerializer,
+                          UserSerializer)
 from reviews.models import Title, Review, Genre, Category, User
-from .viewsets import ListCreateDeleteViewSet, CreateViewSet
+from .viewsets import (ListCreateDeleteViewSet, CreateViewSet)
 from .filters import TitleFilters
-from .permissions import (IsAuthorModeratorAdminOrReadOnly, IsAdminOrReadOnly)
+from .permissions import (IsAuthorModeratorAdminOrReadOnly, IsAdminOrReadOnly,
+                          IsAdmin, IsOwner)
 
 
 class SignUpUserViewSet(CreateViewSet):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = SignUpSerializer
     permission_classes = (AllowAny, )
 
     def perform_create(self, serializer):
@@ -51,11 +54,11 @@ class IssueTokenAPIView(APIView):
                 user, serializer.validated_data.get('confirmation_code')
             ):
                 return Response(
-                    data={'token': f'{RefreshToken.for_user(user).access_token}'},
+                    {'token': f'{RefreshToken.for_user(user).access_token}'},
                     status=status.HTTP_200_OK,
                 )
             return Response(
-                data={'token': 'Указан некорректный код подтверждения.'},
+                {'token': 'Указан некорректный код подтверждения.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -129,3 +132,25 @@ class CategoryViewSet(ListCreateDeleteViewSet):
     filter_backends = (SearchFilter,)
     search_fields = ('$name',)
     permission_classes = (IsAdminOrReadOnly,)
+
+
+class UserViewSet(ModelViewSet):
+    queryset = User.objects.all()
+    http_method_names = ('get', 'post', 'patch', 'delete',)
+    serializer_class = UserSerializer
+    filter_backends = (SearchFilter, )
+    search_fields = ('$username', )
+    permission_classes = (IsAdmin, )
+    lookup_field = 'username'
+    lookup_value_regex = r'[\w.@+-]+'
+
+    @action(detail=False, methods=('get', 'patch'), url_path='me',
+            permission_classes=(IsOwner, ))
+    def user_profile(self, request):
+        serializer = self.get_serializer(request.user, data=request.data)
+        if request.method == 'GET':
+            return Response(serializer.data, status=status.HTTP_200_OK,)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
