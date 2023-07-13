@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.constraints import UniqueConstraint
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import (MinValueValidator, MaxValueValidator,
+                                    RegexValidator)
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -16,7 +17,13 @@ class Category(models.Model):
         max_length=50,
         unique=True,
         verbose_name='Уникальное имя категории',
-        help_text='Укажите уникальное имя категории (не более 50 символов)'
+        help_text='Укажите уникальное имя категории (не более 50 символов)',
+        validators=[
+            RegexValidator(
+                r'^[-a-zA-Z0-9_]+$',
+                'Для поля можно использовать символы: a-z A-Z 0-9 _ -'
+            )
+        ]
     )
 
     class Meta:
@@ -37,7 +44,13 @@ class Genre(models.Model):
         max_length=50,
         unique=True,
         verbose_name='Уникальное имя жанра',
-        help_text='Укажите уникальное имя жанра (не более 50 символов)'
+        help_text='Укажите уникальное имя жанра (не более 50 символов)',
+        validators=[
+            RegexValidator(
+                r'^[-a-zA-Z0-9_]+$',
+                'Для поля можно использовать символы: a-z A-Z 0-9 _ -'
+            )
+        ]
     )
 
     class Meta:

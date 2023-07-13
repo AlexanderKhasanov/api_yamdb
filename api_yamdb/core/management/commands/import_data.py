@@ -3,8 +3,10 @@ import csv
 from django.core.management.base import BaseCommand
 from django.db import utils
 from django.core import exceptions
+from django.contrib.auth import get_user_model
 from reviews.models import Title, Category, Genre, TitleGenre, Review, Comment
-from users.models import User
+
+User = get_user_model()
 
 
 class Command(BaseCommand):

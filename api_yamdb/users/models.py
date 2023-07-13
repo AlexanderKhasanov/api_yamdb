@@ -3,9 +3,9 @@ from django.db import models
 
 
 CHOICES = (
-    ('user', 'Пользователь'),
-    ('moderator', 'Модератор'),
-    ('admin', 'Администратор'),
+    ('user', 'user'),
+    ('moderator', 'moderator'),
+    ('admin', 'admin'),
 )
 
 
@@ -22,7 +22,8 @@ class User(AbstractUser):
     )
     email = models.EmailField(
         verbose_name='e-mail адрес',
-        max_length=254
+        max_length=254,
+        unique=True
     )
 
     class Meta:
@@ -36,4 +37,4 @@ class User(AbstractUser):
 
     @property
     def is_admin(self):
-        return self.role == 'moderator' or self.is_superuser or self.is_staff
+        return self.role == 'admin' or self.is_superuser or self.is_staff

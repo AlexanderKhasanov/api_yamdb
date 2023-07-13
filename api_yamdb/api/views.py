@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django_filters.rest_framework import DjangoFilterBackend
@@ -8,6 +9,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
+from rest_framework.serializers import ValidationError
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -22,6 +24,8 @@ from .viewsets import (ListCreateDeleteViewSet, CreateViewSet)
 from .filters import TitleFilters
 from .permissions import (IsAuthorModeratorAdminOrReadOnly, IsAdminOrReadOnly,
                           IsAdmin, IsOwner)
+
+User = get_user_model()
 
 
 class SignUpUserViewSet(CreateViewSet):
@@ -77,6 +81,12 @@ class ReviewViewSet(ModelViewSet):
         return self.get_title().reviews.all()
 
     def perform_create(self, serializer):
+        title = self.get_title()
+        user = self.request.user
+        if Review.objects.filter(title=title, author=user).exists():
+            raise ValidationError(
+                'На одно произведение можно оставить только один отзыв'
+            )
         serializer.save(
             author=self.request.user,
             title=self.get_title(),
