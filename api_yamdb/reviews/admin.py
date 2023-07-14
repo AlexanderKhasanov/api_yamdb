@@ -1,9 +1,5 @@
 from django.contrib import admin
-from django.contrib.auth import get_user_model
 from .models import Title, Genre, Category, Review, Comment, TitleGenre
-
-
-User = get_user_model()
 
 
 class CategoryAdmin(admin.ModelAdmin):

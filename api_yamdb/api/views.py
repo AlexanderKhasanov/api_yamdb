@@ -20,7 +20,7 @@ from .serializers import (ReviewSerializer, CommentSerializer,
                           SignUpSerializer, IssueTokenSerializer,
                           UserSerializer)
 from reviews.models import Title, Review, Genre, Category, User
-from .viewsets import (ListCreateDeleteViewSet, CreateViewSet)
+from .viewsets import ListCreateDeleteViewSet
 from .filters import TitleFilters
 from .permissions import (IsAuthorModeratorAdminOrReadOnly, IsAdminOrReadOnly,
                           IsAdmin, IsOwner)
@@ -28,13 +28,10 @@ from .permissions import (IsAuthorModeratorAdminOrReadOnly, IsAdminOrReadOnly,
 User = get_user_model()
 
 
-class SignUpUserViewSet(CreateViewSet):
-    queryset = User.objects.all()
-    serializer_class = SignUpSerializer
+class SignUpUserViewSet(APIView):
     permission_classes = (AllowAny, )
 
-    def perform_create(self, serializer):
-        user = serializer.save()
+    def send_confirmation_code(self, user):
         confirmation_code = default_token_generator.make_token(user)
         send_mail(
             subject='Conformation code',
@@ -42,6 +39,24 @@ class SignUpUserViewSet(CreateViewSet):
             from_email=settings.NOREPLY_EMAIL,
             recipient_list=(user.email, ),
         )
+
+    def post(self, request):
+        serializer = SignUpSerializer(data=request.data)
+        user = User.objects.filter(
+            username=request.data.get('username'),
+            email=request.data.get('email')
+        )
+        if user.exists():
+            self.send_confirmation_code(user.first())
+            return Response(serializer.initial_data, status=status.HTTP_200_OK)
+        if serializer.is_valid():
+            user = User.objects.create(
+                username=serializer.validated_data.get('username'),
+                email=serializer.validated_data.get('email')
+            )
+            self.send_confirmation_code(user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class IssueTokenAPIView(APIView):

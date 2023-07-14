@@ -18,10 +18,10 @@ router_v1.register(
 router_v1.register('titles', TitleViewSet)
 router_v1.register('genres', GenreViewSet)
 router_v1.register('categories', CategoryViewSet)
-router_v1.register('auth/signup', SignUpUserViewSet)
 router_v1.register('users', UserViewSet)
 
 urlpatterns = [
     path('v1/', include(router_v1.urls)),
+    path('v1/auth/signup/', SignUpUserViewSet.as_view()),
     path('v1/auth/token/', IssueTokenAPIView.as_view())
 ]
