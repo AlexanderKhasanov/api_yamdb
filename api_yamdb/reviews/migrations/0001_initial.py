@@ -10,129 +10,416 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('auth', '0012_alter_user_first_name_max_length'),
+        ("auth", "0012_alter_user_first_name_max_length"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name="User",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),
-                ('username', models.CharField(error_messages={'unique': 'A user with that username already exists.'}, help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', max_length=150, unique=True, validators=[django.contrib.auth.validators.UnicodeUsernameValidator()], verbose_name='username')),
-                ('first_name', models.CharField(blank=True, max_length=150, verbose_name='first name')),
-                ('last_name', models.CharField(blank=True, max_length=150, verbose_name='last name')),
-                ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
-                ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),
-                ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('bio', models.TextField(blank=True, verbose_name='Биография')),
-                ('role', models.CharField(choices=[('user', 'user'), ('moderator', 'moderator'), ('admin', 'admin')], default='user', max_length=16, verbose_name='Роль')),
-                ('email', models.EmailField(max_length=254, unique=True, verbose_name='e-mail адрес')),
-                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.Group', verbose_name='groups')),
-                ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.Permission', verbose_name='user permissions')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "last_login",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="last login"
+                    ),
+                ),
+                (
+                    "is_superuser",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates that this user has all permissions without explicitly assigning them.",
+                        verbose_name="superuser status",
+                    ),
+                ),
+                (
+                    "username",
+                    models.CharField(
+                        error_messages={
+                            "unique": "A user with that username already exists."
+                        },
+                        help_text="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                        max_length=150,
+                        unique=True,
+                        validators=[
+                            django.contrib.auth.validators.UnicodeUsernameValidator()
+                        ],
+                        verbose_name="username",
+                    ),
+                ),
+                (
+                    "first_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="first name"
+                    ),
+                ),
+                (
+                    "last_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="last name"
+                    ),
+                ),
+                (
+                    "is_staff",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates whether the user can log into this admin site.",
+                        verbose_name="staff status",
+                    ),
+                ),
+                (
+                    "is_active",
+                    models.BooleanField(
+                        default=True,
+                        help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
+                        verbose_name="active",
+                    ),
+                ),
+                (
+                    "date_joined",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now, verbose_name="date joined"
+                    ),
+                ),
+                ("bio", models.TextField(blank=True, verbose_name="Биография")),
+                (
+                    "role",
+                    models.CharField(
+                        choices=[
+                            ("user", "user"),
+                            ("moderator", "moderator"),
+                            ("admin", "admin"),
+                        ],
+                        default="user",
+                        max_length=16,
+                        verbose_name="Роль",
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(
+                        max_length=254, unique=True, verbose_name="e-mail адрес"
+                    ),
+                ),
+                (
+                    "groups",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="The groups this user belongs to. A user will get all permissions granted to each of their groups.",
+                        related_name="user_set",
+                        related_query_name="user",
+                        to="auth.Group",
+                        verbose_name="groups",
+                    ),
+                ),
+                (
+                    "user_permissions",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="Specific permissions for this user.",
+                        related_name="user_set",
+                        related_query_name="user",
+                        to="auth.Permission",
+                        verbose_name="user permissions",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Пользователь',
-                'verbose_name_plural': 'Пользователи',
-                'ordering': ['pk'],
+                "verbose_name": "Пользователь",
+                "verbose_name_plural": "Пользователи",
+                "ordering": ["pk"],
             },
             managers=[
-                ('objects', django.contrib.auth.models.UserManager()),
+                ("objects", django.contrib.auth.models.UserManager()),
             ],
         ),
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(help_text='Укажите название категории (не более 256 символов)', max_length=256, verbose_name='Название категории')),
-                ('slug', models.SlugField(help_text='Укажите уникальное имя категории (не более 50 символов)', unique=True, validators=[django.core.validators.RegexValidator('^[-a-zA-Z0-9_]+$', 'Для поля можно использовать символы: a-z A-Z 0-9 _ -')], verbose_name='Уникальное имя категории')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        help_text="Укажите название категории (не более 256 символов)",
+                        max_length=256,
+                        verbose_name="Название категории",
+                    ),
+                ),
+                (
+                    "slug",
+                    models.SlugField(
+                        help_text="Укажите уникальное имя категории (не более 50 символов)",
+                        unique=True,
+                        validators=[
+                            django.core.validators.RegexValidator(
+                                "^[-a-zA-Z0-9_]+$",
+                                "Для поля можно использовать символы: a-z A-Z 0-9 _ -",
+                            )
+                        ],
+                        verbose_name="Уникальное имя категории",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Категория',
-                'verbose_name_plural': 'Категории',
+                "verbose_name": "Категория",
+                "verbose_name_plural": "Категории",
             },
         ),
         migrations.CreateModel(
-            name='Genre',
+            name="Genre",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(help_text='Укажите название жанра (не более 256 символов)', max_length=256, verbose_name='Название жанра')),
-                ('slug', models.SlugField(help_text='Укажите уникальное имя жанра (не более 50 символов)', unique=True, validators=[django.core.validators.RegexValidator('^[-a-zA-Z0-9_]+$', 'Для поля можно использовать символы: a-z A-Z 0-9 _ -')], verbose_name='Уникальное имя жанра')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        help_text="Укажите название жанра (не более 256 символов)",
+                        max_length=256,
+                        verbose_name="Название жанра",
+                    ),
+                ),
+                (
+                    "slug",
+                    models.SlugField(
+                        help_text="Укажите уникальное имя жанра (не более 50 символов)",
+                        unique=True,
+                        validators=[
+                            django.core.validators.RegexValidator(
+                                "^[-a-zA-Z0-9_]+$",
+                                "Для поля можно использовать символы: a-z A-Z 0-9 _ -",
+                            )
+                        ],
+                        verbose_name="Уникальное имя жанра",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Жанр',
-                'verbose_name_plural': 'Жанры',
+                "verbose_name": "Жанр",
+                "verbose_name_plural": "Жанры",
             },
         ),
         migrations.CreateModel(
-            name='Title',
+            name="Title",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(help_text='Введите название произведения (не более 256 символов)', max_length=256, verbose_name='Название произведения')),
-                ('year', models.IntegerField(help_text='Укажите год выпуска произведения', verbose_name='Год выпуска')),
-                ('description', models.TextField(blank=True, help_text='Укажите описание произведения', verbose_name='Описание произведения')),
-                ('category', models.ForeignKey(help_text='Укажите, к какой категории относится произведение', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='category', to='reviews.category', verbose_name='Категория произведения')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        help_text="Введите название произведения (не более 256 символов)",
+                        max_length=256,
+                        verbose_name="Название произведения",
+                    ),
+                ),
+                (
+                    "year",
+                    models.IntegerField(
+                        help_text="Укажите год выпуска произведения",
+                        verbose_name="Год выпуска",
+                    ),
+                ),
+                (
+                    "description",
+                    models.TextField(
+                        blank=True,
+                        help_text="Укажите описание произведения",
+                        verbose_name="Описание произведения",
+                    ),
+                ),
+                (
+                    "category",
+                    models.ForeignKey(
+                        help_text="Укажите, к какой категории относится произведение",
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="category",
+                        to="reviews.category",
+                        verbose_name="Категория произведения",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Произведение',
-                'verbose_name_plural': 'Произведения',
+                "verbose_name": "Произведение",
+                "verbose_name_plural": "Произведения",
             },
         ),
         migrations.CreateModel(
-            name='TitleGenre',
+            name="TitleGenre",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('genre', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='reviews.genre')),
-                ('title', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='reviews.title')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "genre",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="reviews.genre",
+                    ),
+                ),
+                (
+                    "title",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="reviews.title"
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('title', 'genre')},
+                "unique_together": {("title", "genre")},
             },
         ),
         migrations.AddField(
-            model_name='title',
-            name='genre',
-            field=models.ManyToManyField(help_text='Укажите, к какому жанру относится произведение', related_name='genres', through='reviews.TitleGenre', to='reviews.Genre', verbose_name='Жанры произведения'),
+            model_name="title",
+            name="genre",
+            field=models.ManyToManyField(
+                help_text="Укажите, к какому жанру относится произведение",
+                related_name="genres",
+                through="reviews.TitleGenre",
+                to="reviews.Genre",
+                verbose_name="Жанры произведения",
+            ),
         ),
         migrations.CreateModel(
-            name='Review',
+            name="Review",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('text', models.TextField(verbose_name='Текст отзыва')),
-                ('score', models.PositiveIntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(10)], verbose_name='Рейтинг произведения')),
-                ('pub_date', models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации отзыва')),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reviews', to=settings.AUTH_USER_MODEL)),
-                ('title', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reviews', to='reviews.title')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("text", models.TextField(verbose_name="Текст отзыва")),
+                (
+                    "score",
+                    models.PositiveIntegerField(
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(10),
+                        ],
+                        verbose_name="Рейтинг произведения",
+                    ),
+                ),
+                (
+                    "pub_date",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Дата публикации отзыва"
+                    ),
+                ),
+                (
+                    "author",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="reviews",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "title",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="reviews",
+                        to="reviews.title",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Отзыв',
-                'verbose_name_plural': 'Отзывы',
-                'ordering': ['-pub_date'],
+                "verbose_name": "Отзыв",
+                "verbose_name_plural": "Отзывы",
+                "ordering": ["-pub_date"],
             },
         ),
         migrations.CreateModel(
-            name='Comment',
+            name="Comment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('text', models.CharField(max_length=155, verbose_name='Текст комментария')),
-                ('pub_date', models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации комментария')),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to=settings.AUTH_USER_MODEL)),
-                ('review', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='reviews.review')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "text",
+                    models.CharField(max_length=155, verbose_name="Текст комментария"),
+                ),
+                (
+                    "pub_date",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Дата публикации комментария"
+                    ),
+                ),
+                (
+                    "author",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="comments",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "review",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="comments",
+                        to="reviews.review",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Комментарий',
-                'verbose_name_plural': 'Комментарии',
-                'ordering': ['-pub_date'],
+                "verbose_name": "Комментарий",
+                "verbose_name_plural": "Комментарии",
+                "ordering": ["-pub_date"],
             },
         ),
         migrations.AddConstraint(
-            model_name='review',
-            constraint=models.UniqueConstraint(fields=('title', 'author'), name='unique_title_for_author_review'),
+            model_name="review",
+            constraint=models.UniqueConstraint(
+                fields=("title", "author"), name="unique_title_for_author_review"
+            ),
         ),
     ]

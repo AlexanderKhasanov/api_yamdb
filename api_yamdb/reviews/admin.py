@@ -3,27 +3,19 @@ from .models import Title, Genre, Category, Review, Comment, TitleGenre
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = (
-        'pk', 'name', 'slug'
-    )
+    list_display = ("pk", "name", "slug")
 
 
 class GenreAdmin(admin.ModelAdmin):
-    list_display = (
-        'pk', 'name', 'slug'
-    )
+    list_display = ("pk", "name", "slug")
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = (
-        'pk', 'username'
-    )
+    list_display = ("pk", "username")
 
 
 class TitleAdmin(admin.ModelAdmin):
-    list_display = (
-        'pk', 'name', 'year', 'description', 'category'
-    )
+    list_display = ("pk", "name", "year", "description", "category")
 
 
 admin.site.register(Title, TitleAdmin)

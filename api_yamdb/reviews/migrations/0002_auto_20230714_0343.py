@@ -4,26 +4,37 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('reviews', '0001_initial'),
+        ("reviews", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='category',
-            options={'ordering': ['pk'], 'verbose_name': 'Категория', 'verbose_name_plural': 'Категории'},
+            name="category",
+            options={
+                "ordering": ["pk"],
+                "verbose_name": "Категория",
+                "verbose_name_plural": "Категории",
+            },
         ),
         migrations.AlterModelOptions(
-            name='genre',
-            options={'ordering': ['pk'], 'verbose_name': 'Жанр', 'verbose_name_plural': 'Жанры'},
+            name="genre",
+            options={
+                "ordering": ["pk"],
+                "verbose_name": "Жанр",
+                "verbose_name_plural": "Жанры",
+            },
         ),
         migrations.AlterModelOptions(
-            name='title',
-            options={'ordering': ['pk'], 'verbose_name': 'Произведение', 'verbose_name_plural': 'Произведения'},
+            name="title",
+            options={
+                "ordering": ["pk"],
+                "verbose_name": "Произведение",
+                "verbose_name_plural": "Произведения",
+            },
         ),
         migrations.AlterModelOptions(
-            name='titlegenre',
-            options={'ordering': ['pk']},
+            name="titlegenre",
+            options={"ordering": ["pk"]},
         ),
     ]
